@@ -1,13 +1,12 @@
-"""
-This is a echo bot.
-It echoes any incoming text messages.
-"""
-
 import logging
+import os
 
 from aiogram import Bot, Dispatcher, executor, types
+from dotenv import load_dotenv
 
-API_TOKEN = 'BOT TOKEN HERE'
+
+load_dotenv()
+API_TOKEN = os.environ.get("bot_token")
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -17,20 +16,13 @@ bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
 
 
-@dp.message_handler(commands=['start', 'help'])
+@dp.message_handler(commands=['start'])
 async def send_welcome(message: types.Message):
-    """
-    This handler will be called when user sends `/start` or `/help` command
-    """
     await message.reply("Hi!\nI'm EchoBot!\nPowered by aiogram.")
-
 
 
 @dp.message_handler()
 async def echo(message: types.Message):
-    # old style:
-    # await bot.send_message(message.chat.id, message.text)
-
     await message.answer(message.text)
 
 
